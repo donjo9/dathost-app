@@ -1,6 +1,8 @@
+import {Buffer} from 'buffer';
 import * as React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 import {useAuth} from '../hooks/auth';
 
 const LoginScreen = () => {
@@ -24,9 +26,30 @@ const LoginScreen = () => {
         secureTextEntry={true}
       />
 
-      <TouchableOpacity onPress={() => login(userName, password)}>
+      <TouchableOpacity
+        onPress={async () => {
+          const res = await fetch('https://dathost.net/api/0.1/account', {
+            headers: {
+              'x-fields': 'id',
+              authorization: `Basic ${Buffer.from(
+                `${userName}:${password}`,
+              ).toString('base64')}`,
+            },
+          });
+          if (res.status === 200) {
+            login(userName, password);
+          } else if (res.status === 401) {
+            Toast.show({
+              type: 'error',
+              text1: 'Error',
+              text2: 'wrong username or password',
+            });
+            setPassword('');
+          }
+        }}>
         <Text style={Styles.LoginButton}>Login</Text>
       </TouchableOpacity>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 };
