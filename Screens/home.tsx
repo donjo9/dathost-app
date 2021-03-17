@@ -10,6 +10,7 @@ import {
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../types';
 import {useAuth} from '../hooks/auth';
+import Toast from 'react-native-toast-message';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -23,20 +24,33 @@ const HomeScreen = ({navigation}: Props) => {
   React.useEffect(() => {
     const getServers = async () => {
       if (username && password) {
-        const res = await fetch('https://dathost.net/api/0.1/game-servers', {
-          headers: {
-            'x-fields': 'name,id',
-            authorization: `Basic ${Buffer.from(
-              `${username}:${password}`,
-            ).toString('base64')}`,
-          },
-        });
-        setJson(await res.json());
+        try {
+          const res = await fetch('https://dathost.net/api/0.1/game-servers', {
+            headers: {
+              'x-fields': 'name,id',
+              authorization: `Basic ${Buffer.from(
+                `${username}:${password}`,
+              ).toString('base64')}`,
+            },
+          });
+          if (res.status === 200) {
+            setJson(await res.json());
+          } else if (res.status === 401) {
+            Toast.show({
+              type: 'error',
+              text1: 'Error',
+              text2: 'wrong username or password',
+            });
+            logout();
+          }
+        } catch (e) {
+          console.error(e.message);
+        }
       }
     };
     getServers();
     return () => console.log('killing app.tsx');
-  }, [username, password]);
+  }, [username, password, logout]);
 
   const servers = json.map((s: any) => (
     <TouchableOpacity
