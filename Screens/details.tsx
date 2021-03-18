@@ -43,6 +43,14 @@ type csgo_ports = {
   query: number | null;
 };
 
+type valheim_settings = {
+  admins_steamid64: Array<string>;
+  enable_valheimplus: boolean;
+  slots: number;
+  password: string;
+  world_name: string;
+};
+
 type ServerDetails = {
   id: string;
   name: string;
@@ -84,7 +92,7 @@ type ServerDetails = {
   teamfortress2_settings: null;
   teamspeak3_settings: null;
   user_data: string;
-  valheim_settings: null;
+  valheim_settings: valheim_settings | null;
 };
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, 'Details'>;
