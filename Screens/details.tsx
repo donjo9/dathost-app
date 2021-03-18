@@ -51,6 +51,22 @@ type valheim_settings = {
   world_name: string;
 };
 
+type teamfortress2_settings = {
+  slots: number;
+  rcon: string;
+  password: string;
+  sourcemod_admins: string;
+  enable_gotv: boolean;
+  enable_sourcemod: boolean;
+  insecure: boolean;
+};
+
+type teamspeak3_settings = {
+  slots: number;
+  ts_admin_token: string;
+  ts_server_id: string;
+};
+
 type ServerDetails = {
   id: string;
   name: string;
@@ -89,8 +105,8 @@ type ServerDetails = {
   scheduled_commands: [];
   server_error: null;
   status: [];
-  teamfortress2_settings: null;
-  teamspeak3_settings: null;
+  teamfortress2_settings: teamfortress2_settings | null;
+  teamspeak3_settings: teamspeak3_settings | null;
   user_data: string;
   valheim_settings: valheim_settings | null;
 };
@@ -105,15 +121,15 @@ type GameTypes = {
   csgo: string;
   none: string;
   valheim: string;
-  ts3: string;
-  tf2: string;
+  teamspeak3: string;
+  teamfortress2: string;
 };
 const Games: GameTypes = {
   csgo: 'CS:GO',
   none: 'None',
   valheim: 'Valheim',
-  ts3: 'TeamSpeak 3',
-  tf2: 'Team Fortress 2',
+  teamspeak3: 'TeamSpeak 3',
+  teamfortress2: 'Team Fortress 2',
 };
 const DetailsScreen = ({route}: Props) => {
   const {username, password, logout} = useAuth();
