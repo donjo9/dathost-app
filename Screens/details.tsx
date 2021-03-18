@@ -100,6 +100,21 @@ type Props = {
   navigation: DetailsScreenNavigationProp;
   route: DetailsScreenRouteProp;
 };
+
+type GameTypes = {
+  csgo: string;
+  none: string;
+  valheim: string;
+  ts3: string;
+  tf2: string;
+};
+const Games: GameTypes = {
+  csgo: 'CS:GO',
+  none: 'None',
+  valheim: 'Valheim',
+  ts3: 'TeamSpeak 3',
+  tf2: 'Team Fortress 2',
+};
 const DetailsScreen = ({route}: Props) => {
   const {username, password, logout} = useAuth();
   const [json, setJson] = React.useState<ServerDetails>({} as ServerDetails);
@@ -141,6 +156,9 @@ const DetailsScreen = ({route}: Props) => {
       <View style={Styles.infoItems}>
         <Text style={Styles.infoText}>Game: </Text>
         <Text style={Styles.infoText}>
+          {Games[(json?.game || 'none') as keyof GameTypes]}
+        </Text>
+      </View>
 
       <View style={Styles.infoItems}>
         <Text style={Styles.infoText}>Name:</Text>
