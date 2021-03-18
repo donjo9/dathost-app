@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {RouteProp} from '@react-navigation/core';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../types';
 import {useAuth} from '../hooks/auth';
 import {Buffer} from 'buffer';
 import Toast from 'react-native-toast-message';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type DetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -128,32 +129,39 @@ const DetailsScreen = ({route}: Props) => {
   }, [username, password, route.params.id, logout]);
 
   return (
-    <View>
-      <Text style={Styled.infoText}>ID: {json?.id}</Text>
-      <Text style={Styled.infoText}>Name: {json?.name}</Text>
-      <Text style={Styled.infoText}>Game: {json?.game}</Text>
-      <Text style={Styled.infoText}>Port: {json?.ports?.game}</Text>
-      <Text>
-        ON:
-        {json?.on ? (
-          <Button
-            title="Turn Off"
-            onPress={() => console.log('turning off server')}
-          />
-        ) : (
-          <Button
-            title="Turn On"
-            onPress={() => console.log('turning on server')}
-          />
-        )}
-      </Text>
-    </View>
+    <ScrollView>
+      <View style={Styles.infoItems}>
+        <Text style={Styles.infoText}>Game: </Text>
+        <Text style={Styles.infoText}>
+
+      <View style={Styles.infoItems}>
+        <Text style={Styles.infoText}>Name:</Text>
+        <Text style={Styles.infoText}> {json?.name}</Text>
+      </View>
+      <View style={Styles.infoItems}>
+        <Text style={Styles.infoText}>Game:</Text>
+        <Text style={Styles.infoText}> {json?.game}</Text>
+      </View>
+      <View style={Styles.infoItems}>
+        <Text style={Styles.infoText}>Port:</Text>
+        <Text style={Styles.infoText}> {json?.ports?.game}</Text>
+      </View>
+    </ScrollView>
   );
 };
 
-const Styled = StyleSheet.create({
+const Styles = StyleSheet.create({
   infoText: {
     color: 'white',
+    backgroundColor: '#424556',
+  },
+  infoItems: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    color: 'white',
+    backgroundColor: '#424556',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 
