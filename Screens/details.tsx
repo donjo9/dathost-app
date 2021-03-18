@@ -139,8 +139,8 @@ const DetailsScreen = ({route}: Props) => {
               type: 'error',
               text1: 'Error',
               text2: 'wrong username or password',
+              onHide: logout,
             });
-            logout();
           }
         } catch (e) {
           console.error(e.message);
